@@ -1,0 +1,2 @@
+# terraform-aws-slack-cost-notifier
+AWSサービスごとのコストを毎週自動的にSlackチャンネルに送信する仕組みを提供します。これはTerraformとAWS Lambdaを使用して実装されています。
