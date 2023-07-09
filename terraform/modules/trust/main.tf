@@ -14,8 +14,10 @@ resource "aws_iam_openid_connect_provider" "tfc_provider" {
 }
 */
 
+data "aws_caller_identity" "current" {}
+
 data "aws_iam_openid_connect_provider" "gh_actions_provider_data" {
-  arn = "arn:aws:iam::086854724267:oidc-provider/token.actions.githubusercontent.com"
+  arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
 }
 
 resource "aws_iam_role" "gh_actions_role" {
@@ -33,7 +35,7 @@ resource "aws_iam_role" "gh_actions_role" {
 		"Condition": {
 			"StringEquals": {
 				"token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-				"token.actions.githubusercontent.com:sub": "repo:<GitHubユーザー名>/<GitHubリポジトリ名>:ref:refs/heads/<ブランチ名>"
+				"token.actions.githubusercontent.com:sub": "repo:${var.github_username}/${var.github_repository_name}:ref:refs/heads/${var.github_repository_branch_name}"
 			},
 		}
 	}]
